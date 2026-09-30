@@ -412,6 +412,14 @@ window.addEventListener("keydown", function(event) {
 
     drawGame();
 });
+// 特戰員主角資料設定
+let player = {
+    x: 300,      // 在畫布中央的 X 座標
+    y: 150,      // 在畫布中央的 Y 座標
+    size: 15,    // 角色大小
+    color: "#00ff00", // 戰術綠色
+    direction: "right" // 新增：預設面向右邊 ("up", "down", "left", "right")
+};
 
 </script>
 
