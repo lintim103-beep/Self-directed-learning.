@@ -406,26 +406,7 @@ window.addEventListener("keydown", function(event) {
 
     drawGame();
 });
-// 2. 手電筒微塵光束 (根據 player.direction 動態轉向)
-    let lightAngle = 0; // 預設向右
-    if (player.direction === "left") lightAngle = Math.PI;
-    if (player.direction === "up") lightAngle = -Math.PI / 2;
-    if (player.direction === "down") lightAngle = Math.PI / 2;
 
-    ctx.save();
-    ctx.translate(player.x, player.y);
-    ctx.rotate(lightAngle);
-
-    let gradient = ctx.createRadialGradient(0, 0, 10, 80, 0, 90);
-    gradient.addColorStop(0, "rgba(255, 255, 180, 0.4)");
-    gradient.addColorStop(1, "rgba(255, 255, 180, 0.0)");
-    ctx.fillStyle = gradient;
-
-    ctx.beginPath();
-    ctx.arc(80, 0, 70, -Math.PI / 5, Math.PI / 5);
-    ctx.lineTo(0, 0);
-    ctx.fill();
-    ctx.restore();
 
 </script>
 
