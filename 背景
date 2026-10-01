@@ -208,7 +208,6 @@
     color: #000000;
     box-shadow: 0 0 10px #00ff00;
 }
-
     </style>
 </head>
 <body>
@@ -250,6 +249,7 @@
         <button class="choice-btn" onclick="chooseOption1()">1. 搜尋附近的實驗桌</button>
         <button class="choice-btn" onclick="chooseOption2()">2. 試著推開生鏽的鐵門</button>
     </div>
+
 </div>
 
 <script>
@@ -279,12 +279,6 @@ let storyLines = [
 let currentLineIndex = 0;
 let textIndex = 0;
 
-// 特戰員主角資料設定
-let player = {
-    x: 300,      // 在畫布中央的 X 座標
-    y: 150,      // 在畫布中央的 Y 座標
-    size: 15,    // 角色大小
-    color: "#00ff00" // 戰術綠色
 };// 繪製遊戲畫面與特戰員（含戰術背心與頭盔外貌）
 function drawGame() {
     let canvas = document.getElementById("game-canvas");
@@ -412,14 +406,26 @@ window.addEventListener("keydown", function(event) {
 
     drawGame();
 });
-// 特戰員主角資料設定
-let player = {
-    x: 300,      // 在畫布中央的 X 座標
-    y: 150,      // 在畫布中央的 Y 座標
-    size: 15,    // 角色大小
-    color: "#00ff00", // 戰術綠色
-    direction: "right" // 新增：預設面向右邊 ("up", "down", "left", "right")
-};
+// 2. 手電筒微塵光束 (根據 player.direction 動態轉向)
+    let lightAngle = 0; // 預設向右
+    if (player.direction === "left") lightAngle = Math.PI;
+    if (player.direction === "up") lightAngle = -Math.PI / 2;
+    if (player.direction === "down") lightAngle = Math.PI / 2;
+
+    ctx.save();
+    ctx.translate(player.x, player.y);
+    ctx.rotate(lightAngle);
+
+    let gradient = ctx.createRadialGradient(0, 0, 10, 80, 0, 90);
+    gradient.addColorStop(0, "rgba(255, 255, 180, 0.4)");
+    gradient.addColorStop(1, "rgba(255, 255, 180, 0.0)");
+    ctx.fillStyle = gradient;
+
+    ctx.beginPath();
+    ctx.arc(80, 0, 70, -Math.PI / 5, Math.PI / 5);
+    ctx.lineTo(0, 0);
+    ctx.fill();
+    ctx.restore();
 
 </script>
 
