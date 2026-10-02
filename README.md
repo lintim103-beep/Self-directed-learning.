@@ -165,5 +165,41 @@
             box-shadow: 0 0 10px #00ff00;
         }
     </style>
+    <body>
+
+<div id="game-container">
+    <!-- 封面選單 -->
+    <div id="menu-screen">
+        <div class="title-group">
+            <div class="warning-tag">▲ WARNING: BIOHAZARD CONTAINMENT BREACH ▲</div>
+            <h1 class="main-title">ABYSS LABORATORY</h1>
+        </div>
+
+        <div class="menu-buttons">
+            <button id="sound-btn" class="menu-btn" onclick="toggleSound()">🔊 音效: 開</button>
+            <button class="menu-btn" onclick="onStartClick()">進入遊戲</button>
+            <button class="menu-btn" onclick="onLoadClick()">載入紀錄</button>
+            <button class="menu-btn" onclick="onControlsClick()">操作指南</button>
+        </div>
+
+        <div class="footer-info">
+            SYSTEM STATUS: CRITICAL | B3 SECTOR LOCKED<br>
+            18-Week Project
+        </div>
+    </div>
+
+    <!-- 遊戲故事與畫布區域 -->
+    <div id="story-screen" style="display: none;" onclick="nextSentence()">
+        <canvas id="game-canvas" width="600" height="300"></canvas>
+        <p id="story-text"></p>
+        <div id="choices-box" style="display: none;">
+            <button class="choice-btn" onclick="chooseOption1()">1. 搜尋附近的實驗桌</button>
+            <button class="choice-btn" onclick="chooseOption2()">2. 試著推開生鏽的鐵門</button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
 </head>
 
