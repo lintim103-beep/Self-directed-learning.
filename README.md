@@ -1,5 +1,7 @@
-
-<meta charset="UTF-8">
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
     <title>Abyss Laboratory - Title Screen</title>
     <style>
        #story-screen {
@@ -206,7 +208,6 @@
     color: #000000;
     box-shadow: 0 0 10px #00ff00;
 }
-
     </style>
 </head>
 <body>
@@ -248,6 +249,7 @@
         <button class="choice-btn" onclick="chooseOption1()">1. 搜尋附近的實驗桌</button>
         <button class="choice-btn" onclick="chooseOption2()">2. 試著推開生鏽的鐵門</button>
     </div>
+
 </div>
 
 <script>
@@ -277,12 +279,6 @@ let storyLines = [
 let currentLineIndex = 0;
 let textIndex = 0;
 
-// 特戰員主角資料設定
-let player = {
-    x: 300,      // 在畫布中央的 X 座標
-    y: 150,      // 在畫布中央的 Y 座標
-    size: 15,    // 角色大小
-    color: "#00ff00" // 戰術綠色
 };// 繪製遊戲畫面與特戰員（含戰術背心與頭盔外貌）
 function drawGame() {
     let canvas = document.getElementById("game-canvas");
@@ -292,32 +288,40 @@ function drawGame() {
     ctx.fillStyle = "#050b05";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // 2. 手電筒戰術光束（向前照亮）
-    ctx.fillStyle = "rgba(255, 255, 150, 0.25)";
+    // 2. 手電筒微塵光束 (向右照射)
+    let gradient = ctx.createRadialGradient(player.x, player.y, 10, player.x + 80, player.y, 90);
+    gradient.addColorStop(0, "rgba(255, 255, 180, 0.4)");
+    gradient.addColorStop(1, "rgba(255, 255, 180, 0.0)");
+    ctx.fillStyle = gradient;
     ctx.beginPath();
-    ctx.arc(player.x + 40, player.y, 45, -Math.PI / 4, Math.PI / 4);
+    ctx.arc(player.x + 80, player.y, 70, -Math.PI / 5, Math.PI / 5);
     ctx.lineTo(player.x, player.y);
     ctx.fill();
 
-    // 3. 特戰員身體：戰術背心 (暗灰色矩形)
-    ctx.fillStyle = "#2b322b";
-    ctx.fillRect(player.x - 10, player.y - 8, 20, 16);
+    // 3. 特戰員身體 (戰術背心與雙腿)
+    ctx.fillStyle = "#1a1f1a"; // 深灰綠戰術服
+    ctx.fillRect(player.x - 8, player.y - 6, 16, 18); // 軀幹
+    ctx.fillStyle = "#111111"; // 黑色戰術長褲
+    ctx.fillRect(player.x - 7, player.y + 12, 5, 8); // 左腿
+    ctx.fillRect(player.x + 2, player.y + 12, 5, 8); // 右腿
 
-    // 4. 特戰員頭部：戰術頭盔 (軍綠色圓形)
-    ctx.fillStyle = "#1e3d1e";
+    // 4. 頭盔與頭部
+    ctx.fillStyle = "#2d4a2d"; // 軍綠色戰術頭盔
     ctx.beginPath();
-    ctx.arc(player.x, player.y, 8, 0, Math.PI * 2);
+    ctx.arc(player.x, player.y - 4, 9, 0, Math.PI * 2);
     ctx.fill();
 
-    // 5. 戰術護目鏡 / 夜視儀 (發光熒光綠點)
-    ctx.fillStyle = "#00ff00";
-    ctx.fillRect(player.x + 3, player.y - 3, 4, 6);
+    // 5. 戰術夜視鏡 (強烈螢光綠發光)
+    ctx.fillStyle = "#00ff66";
+    ctx.shadowColor = "#00ff66";
+    ctx.shadowBlur = 8;
+    ctx.fillRect(player.x + 2, player.y - 7, 6, 4);
+    ctx.shadowBlur = 0; // 還原發光效果
 
-    // 6. 手槍 / 手電筒握把
-    ctx.fillStyle = "#111111";
-    ctx.fillRect(player.x + 8, player.y - 2, 6, 4);
+    // 6. 手槍與手電筒
+    ctx.fillStyle = "#222222";
+    ctx.fillRect(player.x + 6, player.y + 2, 10, 4);
 }
-
 function onStartClick() {
     // 隱藏選單、顯示故事畫面
     document.getElementById("menu-screen").style.display = "none";
@@ -403,4 +407,8 @@ window.addEventListener("keydown", function(event) {
     drawGame();
 });
 
+
 </script>
+
+</body>
+</html>
