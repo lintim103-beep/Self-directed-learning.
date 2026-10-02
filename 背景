@@ -393,24 +393,6 @@ function drawGame() {
     ctx.fillRect(player.x + 6, player.y + 2, 10, 4);
 }
 
-// 移動與方向控制
-window.addEventListener("keydown", function(event) {
-    if (event.key === "w" || event.key === "W" || event.key === "ArrowUp") {
-        player.y -= 5;
-        player.direction = "up";
-    } else if (event.key === "s" || event.key === "S" || event.key === "ArrowDown") {
-        player.y += 5;
-        player.direction = "down";
-    } else if (event.key === "a" || event.key === "A" || event.key === "ArrowLeft") {
-        player.x -= 5;
-        player.direction = "left";
-    } else if (event.key === "d" || event.key === "D" || event.key === "ArrowRight") {
-        player.x += 5;
-        player.direction = "right";
-    }
-
-    drawGame();
-});
 </script>
 </body>
 </html>
