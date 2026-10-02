@@ -412,6 +412,5 @@ window.addEventListener("keydown", function(event) {
     drawGame();
 });
 </script>
-
 </body>
 </html>
