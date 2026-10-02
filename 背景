@@ -162,64 +162,66 @@
             letter-spacing: 2px;
             text-align: center;
         }
-         /*音樂按鈕 */
-       #sound-btn {
-    background-color: rgba(10, 2, 2, 0.85);
-}
 
-#game-canvas {
-    width: 100%;
-    height: 300px;
-    background-color: #050b05;
-    border: 2px solid #00ff00;
-    margin-bottom: 20px;
-    box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
-}
-.scene-tag {
-    color: #00ff00;
-    font-family: monospace;
-    font-size: 1.2rem;
-    letter-spacing: 2px;
-    animation: blink 1.5s infinite; /* 文字閃爍 */
-}
-@keyframes blink {
-    0% { opacity: 1; }
-    50% { opacity: 0.3; }
-    100% { opacity: 1; }
-}
+        /* 音樂按鈕 */
+        #sound-btn {
+            background-color: rgba(10, 2, 2, 0.85);
+        }
 
-.choice-btn {
-    display: block;
-    width: 100%;
-    margin: 10px 0;
-    padding: 12px 20px;
-    background-color: rgba(0, 20, 0, 0.8);
-    color: #00ff00;
-    border: 1px solid #00ff00;
-    font-family: monospace;
-    font-size: 1rem;
-    cursor: pointer;
-    text-align: left;
-    transition: all 0.2s ease-in-out;
-}
+        #game-canvas {
+            width: 100%;
+            height: 300px;
+            background-color: #050b05;
+            border: 2px solid #00ff00;
+            margin-bottom: 20px;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+        }
 
-.choice-btn:hover {
-    background-color: #00ff00;
-    color: #000000;
-    box-shadow: 0 0 10px #00ff00;
-}
+        .scene-tag {
+            color: #00ff00;
+            font-family: monospace;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            animation: blink 1.5s infinite; /* 文字閃爍 */
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        .choice-btn {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 12px 20px;
+            background-color: rgba(0, 20, 0, 0.8);
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            font-family: monospace;
+            font-size: 1rem;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .choice-btn:hover {
+            background-color: #00ff00;
+            color: #000000;
+            box-shadow: 0 0 10px #00ff00;
+        }
     </style>
 </head>
 <body>
 
 <div id="game-container">
-<!-- STATE_MENU: 恐怖恐怖風格封面 -->
+    <!-- STATE_MENU: 恐怖風格封面 -->
     <div id="menu-screen">
         <div class="title-group">
             <div class="warning-tag">▲ WARNING: BIOHAZARD CONTAINMENT BREACH ▲</div>
             <h1 class="main-title">ABYSS LABORATORY</h1>
-  </div>
-        
+        </div>
 
         <div class="menu-buttons">
             <button id="sound-btn" class="menu-btn" onclick="toggleSound()">🔊 音效: 開</button>
@@ -234,40 +236,22 @@
         </div>
     </div>
 
-<div id="story-screen" style="display: none;" onclick="nextSentence()">
+    <div id="story-screen" style="display: none;" onclick="nextSentence()">
+        <!-- 1. 最上方：遊戲畫布 canvas -->
+        <canvas id="game-canvas" width="600" height="300"></canvas>
 
+        <!-- 2. 中間：對話框區域 -->
+        <p id="story-text"></p>
 
-   <!-- 1. 最上方：將 scene-box 替換為遊戲畫布 canvas -->
-    <canvas id="game-canvas" width="600" height="300"></canvas>
-    
-
-    <!-- 2. 中間：對話框區域 -->
-    <p id="story-text"></p>
-
-    <!-- 3. 最下方：抉擇選項區域 -->
-    <div id="choices-box" style="display: none;">
-        <button class="choice-btn" onclick="chooseOption1()">1. 搜尋附近的實驗桌</button>
-        <button class="choice-btn" onclick="chooseOption2()">2. 試著推開生鏽的鐵門</button>
+        <!-- 3. 最下方：抉擇選項區域 -->
+        <div id="choices-box" style="display: none;">
+            <button class="choice-btn" onclick="chooseOption1()">1. 搜尋附近的實驗桌</button>
+            <button class="choice-btn" onclick="chooseOption2()">2. 試著推開生鏽的鐵門</button>
+        </div>
     </div>
-
 </div>
 
 <script>
-
-function onStartClick() {
-    document.getElementById("menu-screen").style.display = "none";
-    document.getElementById("story-screen").style.display = "block";
-    textIndex = 0; // 歸零
-    typeWriter();
-}
-    function onLoadClick() {
-       
-        alert("【打卡鐘紀錄】尚無存檔資料。");
-    }
-
-    function onControlsClick() {
-        alert("【生存指南】\nWASD - 移動\n滑鼠 - 手電筒與瞄準\n左鍵 - 射擊/互動");
-    }
 let audioCtx = null;
 let isPlaying = false;
 let timer = null;
@@ -279,7 +263,84 @@ let storyLines = [
 let currentLineIndex = 0;
 let textIndex = 0;
 
-};// 繪製遊戲畫面與特戰員（含戰術背心與頭盔外貌）
+// 特戰員主角資料設定
+let player = {
+    x: 300,      // 在畫布中央的 X 座標
+    y: 150,      // 在畫布中央的 Y 座標
+    size: 15,    // 角色大小
+    color: "#00ff00", // 戰術綠色
+    direction: "right" // 預設面向右邊 ("up", "down", "left", "right")
+};
+
+function onStartClick() {
+    document.getElementById("menu-screen").style.display = "none";
+    document.getElementById("story-screen").style.display = "block";
+    textIndex = 0; // 歸零
+    drawGame();
+    typeWriter();
+}
+
+function onLoadClick() {
+    alert("【打卡鐘紀錄】尚無存檔資料。");
+}
+
+function onControlsClick() {
+    alert("【生存指南】\nWASD - 移動\n滑鼠 - 手電筒與瞄準\n左鍵 - 射擊/互動");
+}
+
+function toggleSound() {
+    if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    
+    isPlaying = !isPlaying; // 切換開關狀態
+    const soundBtn = document.getElementById("sound-btn");
+    
+    if (isPlaying) {
+        timer = setInterval(playBeep, 500);
+        soundBtn.innerText = "🔊 音效: 開";
+    } else {
+        clearInterval(timer);
+        soundBtn.innerText = "🔇 音效: 關";
+    }
+}
+
+function playBeep() {
+    let osc = audioCtx.createOscillator();
+    let gain = audioCtx.createGain();
+    
+    osc.type = "sawtooth";
+    osc.frequency.value = 880;
+    
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.15);
+}
+
+// 開頭劇情打字機效果
+function typeWriter() {
+    let fullText = storyLines[currentLineIndex];
+    if (textIndex < fullText.length) {
+        document.getElementById("story-text").innerText = fullText.slice(0, textIndex + 1);
+        textIndex++;
+        setTimeout(typeWriter, 100);
+    }
+}
+
+function nextSentence() {
+    if (currentLineIndex < storyLines.length - 1) {
+        currentLineIndex++;
+        textIndex = 0;
+        document.getElementById("story-text").innerText = "";
+        typeWriter();
+    } else {
+        document.getElementById("choices-box").style.display = "block";
+    }
+}
+
+// 繪製遊戲畫面與特戰員（含動態手電筒光束）
 function drawGame() {
     let canvas = document.getElementById("game-canvas");
     let ctx = canvas.getContext("2d");
@@ -288,15 +349,26 @@ function drawGame() {
     ctx.fillStyle = "#050b05";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // 2. 手電筒微塵光束 (向右照射)
-    let gradient = ctx.createRadialGradient(player.x, player.y, 10, player.x + 80, player.y, 90);
+    // 2. 手電筒微塵光束 (根據 player.direction 動態轉向)
+    let lightAngle = 0; // 預設向右
+    if (player.direction === "left") lightAngle = Math.PI;
+    if (player.direction === "up") lightAngle = -Math.PI / 2;
+    if (player.direction === "down") lightAngle = Math.PI / 2;
+
+    ctx.save();
+    ctx.translate(player.x, player.y);
+    ctx.rotate(lightAngle);
+
+    let gradient = ctx.createRadialGradient(0, 0, 10, 80, 0, 90);
     gradient.addColorStop(0, "rgba(255, 255, 180, 0.4)");
     gradient.addColorStop(1, "rgba(255, 255, 180, 0.0)");
     ctx.fillStyle = gradient;
+
     ctx.beginPath();
-    ctx.arc(player.x + 80, player.y, 70, -Math.PI / 5, Math.PI / 5);
-    ctx.lineTo(player.x, player.y);
+    ctx.arc(80, 0, 70, -Math.PI / 5, Math.PI / 5);
+    ctx.lineTo(0, 0);
     ctx.fill();
+    ctx.restore();
 
     // 3. 特戰員身體 (戰術背心與雙腿)
     ctx.fillStyle = "#1a1f1a"; // 深灰綠戰術服
@@ -322,92 +394,25 @@ function drawGame() {
     ctx.fillStyle = "#222222";
     ctx.fillRect(player.x + 6, player.y + 2, 10, 4);
 }
-function onStartClick() {
-    // 隱藏選單、顯示故事畫面
-    document.getElementById("menu-screen").style.display = "none";
-    document.getElementById("story-screen").style.display = "block";
-    
-    // 新增這行：呼叫繪製函數，畫出特戰員！
-    drawGame();
 
-    // 開始打字機效果
-    typeWriter();
-}
-
-
-function toggleSound() {
-    if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    }
-    
-    isPlaying = !isPlaying; // 切換開關狀態
-    const soundBtn = document.getElementById("sound-btn");
-    
-    if (isPlaying) {
-        // 開啟：每 0.5 秒嗶一次
-        timer = setInterval(playBeep, 500);
-        soundBtn.innerText = "🔊 音效: 開";
-    } else {
-        // 關閉：清除定時器
-        clearInterval(timer);
-        soundBtn.innerText = "🔇 音效: 關";
-    }
-}
-
-function playBeep() {
-    let osc = audioCtx.createOscillator();
-    let gain = audioCtx.createGain();
-    
-    osc.type = "sawtooth";
-    osc.frequency.value = 880;
-    
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    
-    osc.start();
-    osc.stop(audioCtx.currentTime + 0.15);
-}
-
-  // 開頭劇情
-function typeWriter() {
-    let fullText = storyLines[currentLineIndex];
-    if (textIndex < fullText.length) {
-        document.getElementById("story-text").innerText = fullText.slice(0, textIndex + 1);
-        textIndex++;
-        setTimeout(typeWriter, 100);
-    }
-}
-
-
-function nextSentence() {
-    if (currentLineIndex < storyLines.length - 1) {
-        currentLineIndex++;
-        textIndex = 0;
-        document.getElementById("story-text").innerText = "";
-        typeWriter();
-    } else {
-        // 當劇情已經到最後一句時，顯示抉擇選項！
-        document.getElementById("choices-box").style.display = "block";
-    }
-}
-
-// 移動
+// 移動與方向控制
 window.addEventListener("keydown", function(event) {
-    // 判斷按下的按鍵並改變特戰員座標
     if (event.key === "w" || event.key === "W" || event.key === "ArrowUp") {
-        player.y -= 5; // 向上走
+        player.y -= 5;
+        player.direction = "up";
     } else if (event.key === "s" || event.key === "S" || event.key === "ArrowDown") {
-        player.y += 5; // 向下走
+        player.y += 5;
+        player.direction = "down";
     } else if (event.key === "a" || event.key === "A" || event.key === "ArrowLeft") {
-        player.x -= 5; // 向左走
+        player.x -= 5;
+        player.direction = "left";
     } else if (event.key === "d" || event.key === "D" || event.key === "ArrowRight") {
-        player.x += 5; // 向右走
+        player.x += 5;
+        player.direction = "right";
     }
 
     drawGame();
 });
-
-
 </script>
 
 </body>
