@@ -394,6 +394,7 @@ function drawGame() {
 }
 // 移動與方向控制
 window.addEventListener("keydown", function(event) {
+    event.preventDefault(); // 防止方向鍵捲動網頁，並確保按鍵事件被捕捉
     if (event.key === "w" || event.key === "W" || event.key === "ArrowUp") {
         player.y -= 5;
         player.direction = "up";
