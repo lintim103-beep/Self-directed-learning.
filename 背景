@@ -394,20 +394,23 @@ function drawGame() {
 }
 // 移動與方向控制
 window.addEventListener("keydown", function(event) {
-    event.preventDefault(); // 防止方向鍵捲動網頁，並確保按鍵事件被捕捉
+    // 判斷按下的按鍵、改變特戰員座標與面向方向
     if (event.key === "w" || event.key === "W" || event.key === "ArrowUp") {
         player.y -= 5;
-        player.direction = "up";
+        player.direction = "up";    // 向上
     } else if (event.key === "s" || event.key === "S" || event.key === "ArrowDown") {
         player.y += 5;
-        player.direction = "down";
+        player.direction = "down";  // 向下
     } else if (event.key === "a" || event.key === "A" || event.key === "ArrowLeft") {
         player.x -= 5;
-        player.direction = "left";
+        player.direction = "left";  // 向左
     } else if (event.key === "d" || event.key === "D" || event.key === "ArrowRight") {
         player.x += 5;
-        player.direction = "right";
+        player.direction = "right"; // 向右
     }
+
+    drawGame();
+});
 
     drawGame();
 });
