@@ -259,7 +259,7 @@
         <canvas id="game-canvas" width="600" height="300"></canvas>
 
         <!-- 2. 中間：對話框區域 -->
-        <p id="story-text"></p>
+        <p id="story-text"></p> 
 
         <!-- 3. 最下方：抉擇選項區域 -->
         <div id="choices-box" style="display: none;">
@@ -267,9 +267,10 @@
            <button class="choice-btn" onclick="chooseOption2(event)">2. 試著推開生鏽的鐵門</button>
         </div>
     </div>
-<!-- 新增：玩家道具與狀態面板 -->
-<div id="status-panel" style="margin: 10px 0; padding: 10px; background-color: rgba(0, 20, 0, 0.6); border: 1px dashed #00ff00; color: #00ff00; font-family: monospace; font-size: 14px;">
-    <strong>[裝備狀態]</strong> 道具：無 | 狀態：正常
+<!-- 玩家道具與狀態面板 -->
+<div id="status-panel" class="status-panel">
+    <span><span class="status-label">【裝備】：</span><span id="item-slot">無</span></span>
+    <span><span class="status-label">【狀態】：</span><span id="player-condition">正常</span></span>
 </div>
 </div>
 
