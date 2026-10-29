@@ -412,6 +412,13 @@ window.addEventListener("keydown", function(event) {
 
     drawGame();
 });
+function chooseOption1() {
+    let storyText = document.getElementById("story-text");
+    storyText.innerText = "【調查結果】你在凌亂的實驗桌上找到了一把生鏽的手術刀與半瓶消毒酒精！戰力提升！";
+    
+    // 點擊後把選項按鈕藏起來，避免重複點擊
+    document.getElementById("choices-box").style.display = "none";
+}
 </script>
 </body>
 </html>
