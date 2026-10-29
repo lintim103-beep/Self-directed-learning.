@@ -409,8 +409,6 @@ window.addEventListener("keydown", function(event) {
         player.direction = "right"; // 向右
     }
 
-    drawGame();
-});
 
     drawGame();
 });
