@@ -209,6 +209,26 @@
             color: #000000;
             box-shadow: 0 0 10px #00ff00;
         }
+          /* 道具與狀態面板樣式 */
+.status-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(0, 15, 0, 0.85);
+    border: 1px solid #00ff00;
+    padding: 10px 15px;
+    margin: 15px 0;
+    color: #00ff00;
+    font-family: monospace;
+    font-size: 14px;
+    letter-spacing: 2px;
+    box-shadow: inset 0 0 10px rgba(0, 255, 0, 0.2);
+}
+
+.status-label {
+    color: #88ff88;
+    font-weight: bold;
+}
     </style>
 </head>
 <body>
@@ -243,11 +263,14 @@
 
         <!-- 3. 最下方：抉擇選項區域 -->
         <div id="choices-box" style="display: none;">
-            <button class="choice-btn" onclick="chooseOption1()">1. 搜尋附近的實驗桌</button>
-            <button class="choice-btn" onclick="chooseOption2()">2. 試著推開生鏽的鐵門</button>
-
+           <button class="choice-btn" onclick="chooseOption1(event)">1. 搜尋附近的實驗桌</button>
+           <button class="choice-btn" onclick="chooseOption2(event)">2. 試著推開生鏽的鐵門</button>
         </div>
     </div>
+<!-- 新增：玩家道具與狀態面板 -->
+<div id="status-panel" style="margin: 10px 0; padding: 10px; background-color: rgba(0, 20, 0, 0.6); border: 1px dashed #00ff00; color: #00ff00; font-family: monospace; font-size: 14px;">
+    <strong>[裝備狀態]</strong> 道具：無 | 狀態：正常
+</div>
 </div>
 
 <script>
@@ -261,6 +284,7 @@ let storyLines = [
 ];
 let currentLineIndex = 0;
 let textIndex = 0;
+let isChoosing = false; // 新增：用來鎖定是否正在選選項
 
 // 特戰員主角資料設定
 let player = {
@@ -327,18 +351,21 @@ function typeWriter() {
         setTimeout(typeWriter, 100);
     }
 }
-
 function nextSentence() {
+    // 如果正在選選項，直接擋掉，不准往下
+    if (isChoosing) return;
+
     if (currentLineIndex < storyLines.length - 1) {
         currentLineIndex++;
         textIndex = 0;
         document.getElementById("story-text").innerText = "";
         typeWriter();
     } else {
+        // 顯示選項，並把鎖打開
+        isChoosing = true; 
         document.getElementById("choices-box").style.display = "block";
     }
 }
-
 // 繪製遊戲畫面與特戰員（含動態手電筒光束）
 function drawGame() {
     let canvas = document.getElementById("game-canvas");
@@ -413,19 +440,23 @@ window.addEventListener("keydown", function(event) {
 
     drawGame();
 });
-function chooseOption1() {
+// 選項一：搜尋附近的實驗桌
+function chooseOption1(event) {
+    if (event) event.stopPropagation(); // 阻止事件向上冒泡
     let storyText = document.getElementById("story-text");
-    storyText.innerText = "【調查結果】你在凌亂的實驗桌上找到了一把生鏽的手術刀與半瓶消毒酒精！?";
+    storyText.innerText = "【調查結果】你在凌亂的實驗桌上找到了一把生鏽的手術刀與半瓶消毒酒精！戰力提升！";
     
-    // 點擊後把選項按鈕藏起來，避免重複點擊
+    // 點擊後立刻把選項按鈕隱藏
     document.getElementById("choices-box").style.display = "none";
 }
+
 // 選項二：試著推開生鏽的鐵門
-function chooseOption2() {
+function chooseOption2(event) {
+    if (event) event.stopPropagation(); // 阻止事件向上冒泡
     let storyText = document.getElementById("story-text");
-    storyText.innerText = "【警報觸發】你用力一推，生鏽鐵門发出刺耳的摩擦聲，黑暗中似乎有東西被驚動了...！";
+    storyText.innerText = "【警報觸發】你用力一推，生鏽鐵門發出刺耳的摩擦聲，黑暗中似乎有東西被驚動了...！";
     
-    // 點擊後把選項按鈕藏起來
+    // 點擊後立刻把選項按鈕隱藏
     document.getElementById("choices-box").style.display = "none";
 }
 </script>
