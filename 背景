@@ -420,6 +420,14 @@ function chooseOption1() {
     // 點擊後把選項按鈕藏起來，避免重複點擊
     document.getElementById("choices-box").style.display = "none";
 }
+// 選項二：試著推開生鏽的鐵門
+function chooseOption2() {
+    let storyText = document.getElementById("story-text");
+    storyText.innerText = "【警報觸發】你用力一推，生鏽鐵門发出刺耳的摩擦聲，黑暗中似乎有東西被驚動了...！";
+    
+    // 點擊後把選項按鈕藏起來
+    document.getElementById("choices-box").style.display = "none";
+}
 </script>
 </body>
 </html>
